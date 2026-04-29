@@ -1,17 +1,17 @@
 import { mdToPdf } from 'md-to-pdf';
 import pdfConfig from '../../../pdf.config.cjs';
 
-export class RendererTimeoutError extends Error {
-  constructor(message = 'Render timed out.') {
-    super(message);
-    this.name = 'RendererTimeoutError';
+export class RendererError extends Error {
+  constructor(message = 'Renderer error.', options?: { cause?: unknown }) {
+    super(message, options);
+    this.name = 'RendererError';
   }
 }
 
-export class RendererError extends Error {
-  constructor(message = 'Renderer error.', readonly cause?: unknown) {
+export class RendererTimeoutError extends RendererError {
+  constructor(message = 'Render timed out.') {
     super(message);
-    this.name = 'RendererError';
+    this.name = 'RendererTimeoutError';
   }
 }
 
@@ -46,7 +46,7 @@ export async function renderMarkdownToPdf(
       return Buffer.from(result.content);
     } catch (err) {
       if (err instanceof RendererError) throw err;
-      throw new RendererError('Renderer error.', err);
+      throw new RendererError('Renderer error.', { cause: err });
     }
   })();
 
