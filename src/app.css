@@ -1,1 +1,25 @@
-/* Tailwind entry — populated in Task 2. */
+@import "tailwindcss";
+
+@theme {
+  --color-rd-dark: #424B5A;
+  --color-rd-body: #6d6e71;
+  --color-rd-red: #D71920;
+  --color-rd-light: #BBBDBF;
+  --color-rd-bg: #ffffff;
+  --color-rd-surface: #f5f5f5;
+
+  --font-sans: "pragmatica", "Helvetica Neue", Helvetica, "Segoe UI", system-ui, sans-serif;
+  --font-serif: "Besley", Georgia, "Times New Roman", serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+html, body {
+  background: var(--color-rd-bg);
+  color: var(--color-rd-body);
+  font-family: var(--font-sans);
+}
+
+@font-face {
+  /* Pragmatica via Adobe — same source as pdf.config.cjs */
+  /* Loaded via stylesheet link in Task 8 to avoid blocking the SSR pass */
+}
