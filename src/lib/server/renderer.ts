@@ -1,15 +1,5 @@
 import { mdToPdf } from 'md-to-pdf';
-import { createRequire } from 'node:module';
-import { fileURLToPath } from 'node:url';
-import { dirname, resolve } from 'node:path';
-
-const _require = createRequire(import.meta.url);
-const _dir = dirname(fileURLToPath(import.meta.url));
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const pdfConfig = _require(resolve(_dir, '../../../pdf.config.cjs')) as {
-  css: string;
-  pdf_options: Record<string, unknown>;
-};
+import pdfConfig from './pdf-config';
 
 export class RendererError extends Error {
   constructor(message = 'Renderer error.', options?: { cause?: unknown }) {

@@ -14,7 +14,7 @@
  *   (or directly: npx md-to-pdf --config-file pdf.config.js docs/rfp-handbook.md)
  */
 
-module.exports = {
+const pdfConfig = {
   pdf_options: {
     format: "letter",
     margin: {
@@ -175,3 +175,5 @@ module.exports = {
     }
   `,
 };
+
+export default pdfConfig;

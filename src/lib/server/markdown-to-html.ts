@@ -1,5 +1,5 @@
 import { marked } from 'marked';
-import pdfConfig from '../../../pdf.config.cjs';
+import pdfConfig from './pdf-config';
 
 export function markdownToHtml(markdown: string): string {
   const body = marked.parse(markdown, { async: false }) as string;
