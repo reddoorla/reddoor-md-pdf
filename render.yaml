@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: reddoor-md-pdf
+    runtime: docker
+    region: ohio
+    plan: free
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: PUPPETEER_SKIP_DOWNLOAD
+        value: "1"
+      - key: PUPPETEER_EXECUTABLE_PATH
+        value: /usr/bin/chromium
+      - key: NODE_ENV
+        value: production
+      - key: BODY_SIZE_LIMIT
+        value: "2097152"
+      - key: ADDRESS_HEADER
+        value: x-forwarded-for
+      - key: XFF_DEPTH
+        value: "1"
