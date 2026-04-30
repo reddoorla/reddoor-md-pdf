@@ -1,4 +1,4 @@
-import { error, json } from '@sveltejs/kit';
+import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { deriveFilename } from '$lib/server/filename';
 import { exceedsMarkdownLimit } from '$lib/server/size-limit';
@@ -11,9 +11,7 @@ import {
 
 const limiter = createRateLimiter(DEFAULT_RATE_LIMIT);
 
-function clientIp(request: Request, getClientAddress: () => string): string {
-  const fwd = request.headers.get('x-forwarded-for');
-  if (fwd) return fwd.split(',')[0].trim();
+function clientIp(getClientAddress: () => string): string {
   try {
     return getClientAddress();
   } catch {
@@ -43,7 +41,7 @@ export const POST: RequestHandler = async ({ request, getClientAddress }) => {
     return json({ error: 'Markdown too large.' }, { status: 413 });
   }
 
-  const ip = clientIp(request, getClientAddress);
+  const ip = clientIp(getClientAddress);
   const limit = limiter.take(ip);
   if (!limit.allowed) {
     const retrySec = Math.ceil(limit.retryAfterMs / 1000);
@@ -56,13 +54,12 @@ export const POST: RequestHandler = async ({ request, getClientAddress }) => {
   try {
     const pdf = await renderMarkdownToPdf(markdown);
     const out = deriveFilename(filename, markdown);
-    const body: ArrayBuffer = pdf.buffer.slice(pdf.byteOffset, pdf.byteOffset + pdf.byteLength) as ArrayBuffer;
-    return new Response(body, {
+    return new Response(pdf as unknown as BufferSource, {
       status: 200,
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': `attachment; filename="${out}"`,
-        'Content-Length': String(pdf.byteLength)
+        'Content-Length': String(pdf.length)
       }
     });
   } catch (err) {
@@ -72,6 +69,7 @@ export const POST: RequestHandler = async ({ request, getClientAddress }) => {
     if (err instanceof RendererError) {
       return json({ error: 'Renderer error.' }, { status: 502 });
     }
-    throw error(500, 'Unexpected error.');
+    console.error('[/api/generate] unexpected error:', err);
+    return json({ error: 'Unexpected error.' }, { status: 500 });
   }
 };
