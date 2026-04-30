@@ -1448,7 +1448,6 @@ COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --prod --frozen-lockfile
 
 COPY --from=builder /app/build ./build
-COPY pdf.config.cjs ./pdf.config.cjs
 
 EXPOSE 8080
 CMD ["node", "build"]

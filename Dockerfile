@@ -1,4 +1,4 @@
-FROM node:22-slim AS builder
+FROM node:22.11-slim AS builder
 WORKDIR /app
 
 ENV PNPM_HOME=/pnpm \
@@ -13,7 +13,7 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 RUN pnpm build
 
-FROM node:22-slim AS runner
+FROM node:22.11-slim AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production \
@@ -39,7 +39,6 @@ RUN apt-get update \
         libdrm2 \
         libpango-1.0-0 \
         libcairo2 \
-        libasound2 \
     && rm -rf /var/lib/apt/lists/*
 
 RUN corepack enable

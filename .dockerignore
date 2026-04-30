@@ -7,3 +7,11 @@ docs
 tests
 *.md
 .DS_Store
+.env
+.env.*
+test-results
+playwright-report
+playwright/.cache
+.vscode
+.idea
+.claude
