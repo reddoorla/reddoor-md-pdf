@@ -86,7 +86,7 @@
 </script>
 
 <main class="mx-auto flex min-h-screen max-w-[720px] flex-col gap-6 px-6 py-10">
-  <header class="flex items-center gap-3">
+  <header class="flex items-center gap-3 w-full">
     <img src={logoUrl} alt="Reddoor" class="h-7 w-auto" />
     <h1 class="text-2xl text-rd-dark">Markdown → PDF</h1>
   </header>
