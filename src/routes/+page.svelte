@@ -1,5 +1,5 @@
 <script lang="ts">
-  import logoUrl from '$lib/assets/logos/logoFull.svg';
+  import logoUrl from '$lib/assets/logos/reddoor_logo.png';
 
   let markdown = $state('');
   let filename = $state('');
