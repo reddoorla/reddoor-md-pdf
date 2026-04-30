@@ -91,7 +91,7 @@
     <h1 class="text-2xl text-rd-dark">Markdown → PDF</h1>
   </header>
 
-  <p class="text-sm text-rd-body">
+  <p class="text-sm text-rd-body text-center">
     Paste markdown or drop a <code class="rounded bg-rd-surface px-1 py-0.5">.md</code> file. Get a Reddoor-branded PDF.
   </p>
 

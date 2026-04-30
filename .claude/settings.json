@@ -57,7 +57,9 @@
       "Bash(curl -s -w \"\\\\n%{http_code}\\\\n\" https://reddoor-md-pdf.onrender.com/healthz)",
       "Bash(curl -sS -m 90 -w \"\\\\nHTTP %{http_code}\\\\n\" https://reddoor-md-pdf.onrender.com/healthz)",
       "Bash(curl -sS -m 60 -o /tmp/prod-final.pdf -w 'HTTP %{http_code}  size %{size_download}\\\\n' -X POST https://reddoor-md-pdf.onrender.com/api/generate -H 'Content-Type: application/json' -d '{\"markdown\":\"# Production\\\\n\\\\nReddoor markdown to PDF, live.\"}')",
-      "Bash(file src/lib/assets/logos/*)"
+      "Bash(file src/lib/assets/logos/*)",
+      "Bash(sips -Z 256 /tmp/favicon-square.png --out static/favicon.png)",
+      "Bash(node --input-type=module -e ' *)"
     ]
   }
 }
