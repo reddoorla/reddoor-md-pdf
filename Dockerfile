@@ -1,11 +1,9 @@
-FROM node:22.11-slim AS builder
+FROM node:22.13-slim AS builder
 WORKDIR /app
 
-ENV PNPM_HOME=/pnpm \
-    PATH=/pnpm:$PATH \
-    PUPPETEER_SKIP_DOWNLOAD=1
+ENV PUPPETEER_SKIP_DOWNLOAD=1
 
-RUN corepack enable
+RUN npm install -g pnpm@9
 
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
@@ -13,7 +11,7 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 RUN pnpm build
 
-FROM node:22.11-slim AS runner
+FROM node:22.13-slim AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production \
@@ -41,7 +39,7 @@ RUN apt-get update \
         libcairo2 \
     && rm -rf /var/lib/apt/lists/*
 
-RUN corepack enable
+RUN npm install -g pnpm@9
 
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --prod --frozen-lockfile
