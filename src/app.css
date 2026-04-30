@@ -20,8 +20,3 @@ html, body {
   color: var(--color-rd-body);
   font-family: var(--font-sans);
 }
-
-@font-face {
-  /* Pragmatica via Adobe — same source as pdf.config.cjs */
-  /* Loaded via stylesheet link in Task 8 to avoid blocking the SSR pass */
-}
