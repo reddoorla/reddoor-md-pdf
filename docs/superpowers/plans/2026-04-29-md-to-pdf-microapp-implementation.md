@@ -1508,10 +1508,11 @@ Render's free tier spins the service down after 15 min idle (~50 s cold-start on
 
 Render injects its own `PORT` env var; the SvelteKit Node adapter respects `process.env.PORT` automatically, so we don't set it here. The Dockerfile's `EXPOSE 8080` and `PORT=8080` default still work for local Docker runs.
 
-The three additional env vars wire SvelteKit's adapter-node to Render's proxy correctly:
+The four additional env vars wire SvelteKit's adapter-node to Render's proxy correctly:
 
 - `BODY_SIZE_LIMIT=2097152` (2 MB) — adapter-node defaults to 512 KB, which is below the app's 1 MB markdown cap. Without this, oversized requests are killed by the framework with a non-JSON `Payload Too Large` response before the handler can return its `{"error":"Markdown too large."}` shape.
 - `ADDRESS_HEADER=x-forwarded-for` + `XFF_DEPTH=1` — tells `getClientAddress()` to extract the rightmost-but-one entry from the `X-Forwarded-For` header, which is the actual client IP behind Render's single-hop proxy. Without these, `getClientAddress()` returns the proxy's IP (every request shares one bucket) or, with naive XFF parsing, the leftmost (attacker-controllable) value.
+- `ORIGIN=https://reddoor-md-pdf.onrender.com` — adapter-node uses this for CSRF protection (matching the Origin header on POSTs against the external URL). Without it, `POST /api/generate` 403s in production. If you bind a custom domain, update this value.
 
 - [ ] **Step 1: Create `render.yaml`**
 
@@ -1537,6 +1538,8 @@ services:
         value: x-forwarded-for
       - key: XFF_DEPTH
         value: "1"
+      - key: ORIGIN
+        value: https://reddoor-md-pdf.onrender.com
 ```
 
 - [ ] **Step 2: Commit (deploy is a separate user action)**
