@@ -86,7 +86,7 @@
 </script>
 
 <main class="mx-auto flex min-h-screen max-w-[720px] flex-col gap-6 px-6 py-10">
-  <header class="flex items-center gap-3 w-full">
+  <header class="flex items-center gap-3 w-full justify-center">
     <img src={logoUrl} alt="Reddoor" class="h-7 w-auto" />
     <h1 class="text-2xl text-rd-dark">Markdown → PDF</h1>
   </header>
@@ -113,14 +113,24 @@
     />
   </label>
 
-  <button
-    type="button"
-    onclick={generate}
-    disabled={busy || !markdown.trim()}
-    class="rounded bg-rd-red px-4 py-2 text-white transition disabled:cursor-not-allowed disabled:opacity-50"
-  >
-    {busy ? 'Generating…' : 'Generate PDF'}
-  </button>
+  <div class="flex flex-col gap-1">
+    <button
+      type="button"
+      onclick={generate}
+      disabled={busy || !markdown.trim()}
+      class="rounded bg-rd-red px-4 py-2 text-white transition disabled:cursor-not-allowed disabled:opacity-50"
+    >
+      {busy ? 'Generating…' : 'Generate PDF'}
+    </button>
+    <div
+      class="h-1 w-full overflow-hidden rounded bg-rd-light/40 transition-opacity duration-200"
+      class:opacity-0={!busy}
+      class:opacity-100={busy}
+      aria-hidden={!busy}
+    >
+      <div class="h-full w-1/3 animate-progress bg-rd-red"></div>
+    </div>
+  </div>
 
   {#if errorMsg}
     <p class="rounded border border-rd-red/40 bg-rd-red/5 px-3 py-2 text-sm text-rd-red">

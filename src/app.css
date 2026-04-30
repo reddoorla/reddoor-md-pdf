@@ -13,6 +13,13 @@
   --font-sans: "pragmatica", "Helvetica Neue", Helvetica, "Segoe UI", system-ui, sans-serif;
   --font-serif: "Besley", Georgia, "Times New Roman", serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --animate-progress: progress 1.5s ease-in-out infinite;
+}
+
+@keyframes progress {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
 }
 
 html, body {
