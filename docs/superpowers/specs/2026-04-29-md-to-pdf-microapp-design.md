@@ -102,7 +102,7 @@ In all error paths, the textarea content remains intact.
 ## Testing
 
 - **Unit (Vitest):**
-  - `renderer.ts`: given fixture markdown, returns a `Buffer` whose first bytes are `%PDF-` and length > 1 KB. Snapshot the *intermediate HTML* (not the PDF bytes) for fixtures covering: heading-only, table, link, code block.
+  - `renderer.ts`: given fixture markdown, returns a `Buffer` whose first bytes are `%PDF-` and length > 1 KB. Test PDF output at the buffer level: assert PDF magic bytes (`%PDF-`) and a reasonable byte length. The actual markdown→HTML transformation is owned by `md-to-pdf` and not snapshotted directly.
   - `slugify` / filename derivation: pure-function tests including no-H1, unicode, and overlong-title edge cases.
   - Soft-gate helpers (size check, token-bucket): pure-function tests.
 - **Integration (Playwright, one spec):** boot the app, paste a small markdown, click Generate, assert a PDF download fires and the byte stream starts with `%PDF-`. One happy path is enough.

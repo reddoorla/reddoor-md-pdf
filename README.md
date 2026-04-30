@@ -25,6 +25,10 @@ Local container check:
     docker build -t reddoor-md-pdf .
     docker run --rm -p 8080:8080 reddoor-md-pdf
 
+## Trust model
+
+This app is intentionally single-tenant: anyone with the URL can render markdown to a Reddoor-branded PDF, and the user who pastes is the consumer of the resulting PDF. There is no authentication, and the server does not sanitize the markdown — raw HTML in the input (including `<script>` tags) is rendered by the headless Chromium. The headless context has no cookies, no auth, and no access to secrets, so the worst-case impact of a malicious paste is limited to the user's own PDF. If you ever extend this app to multi-tenant or unauthenticated public use beyond Reddoor staff, sanitize the markdown first (e.g. with `sanitize-html`) and consider blocking outbound network from Chromium.
+
 ## Limits
 
 - 1 MB per markdown body
