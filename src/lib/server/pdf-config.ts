@@ -53,15 +53,22 @@ const pdfConfig = {
       padding-bottom: 0.3em;
       border-bottom: 1px solid #BBBDBF;
       letter-spacing: -0.01em;
+      /* Top-level (#) headings start each major section on a fresh page. */
+      break-before: page;
+      break-after: avoid;
+    }
+    /* ...except the very first heading, so the document doesn't open on a
+       blank page. */
+    h1:first-child {
+      break-before: avoid;
     }
     h2 {
       font-family: "Besley", Georgia, "Times New Roman", serif;
       font-size: 24px;
       font-weight: 300;
       color: #424B5A;
-      margin-top: 0;
+      margin-top: 1.2em;
       margin-bottom: 0.4em;
-      break-before: page;
       break-after: avoid;
     }
     h3 {
@@ -167,11 +174,6 @@ const pdfConfig = {
       text-decoration: underline;
       text-decoration-color: rgba(215, 25, 32, 0.35);
       text-underline-offset: 2px;
-    }
-    /* Keep tables together with their preceding heading */
-    h2 + table, h3 + table, h4 + table,
-    h2 + p + table, h3 + p + table {
-      page-break-before: avoid;
     }
   `,
 };
