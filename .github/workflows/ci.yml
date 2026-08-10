@@ -1,0 +1,30 @@
+name: ci
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  ci:
+    # Display name set to "ci / ci" so the check-run name matches the exact
+    # context string fleet rulesets require (site repos get it for free via
+    # the reusable-workflow caller; this repo runs its own lean job).
+    name: ci / ci
+    runs-on: ubuntu-latest
+    env:
+      # The renderer unit test renders a real PDF when it can find a browser.
+      # ubuntu-latest runners ship Chrome here; without this the test skips.
+      PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+        with:
+          version: 11.8.0
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: pnpm test
