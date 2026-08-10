@@ -3,9 +3,12 @@ WORKDIR /app
 
 ENV PUPPETEER_SKIP_DOWNLOAD=1
 
-RUN npm install -g pnpm@9
+# pnpm 11.8.x is the fleet-standard version; the lockfile + the overrides in
+# pnpm-workspace.yaml are written for it (pnpm 9 does not read workspace-file
+# overrides, so a frozen install with pnpm 9 would fail as out-of-sync).
+RUN npm install -g pnpm@11.8.0
 
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
 
 COPY . .
@@ -39,9 +42,9 @@ RUN apt-get update \
         libcairo2 \
     && rm -rf /var/lib/apt/lists/*
 
-RUN npm install -g pnpm@9
+RUN npm install -g pnpm@11.8.0
 
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --prod --frozen-lockfile
 
 COPY --from=builder /app/build ./build
