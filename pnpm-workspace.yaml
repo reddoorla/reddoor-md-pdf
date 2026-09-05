@@ -1,0 +1,13 @@
+# Security override: @sveltejs/kit pins cookie ^0.6.0, which is vulnerable to
+# GHSA-pxg6-pf52-xh8x (out-of-bounds characters in name/path/domain). cookie
+# 0.7.x is API-compatible (it only tightens validation). Scoped to the
+# vulnerable range so the override self-retires once kit moves on its own.
+overrides:
+  cookie@<0.7.0: ^0.7.0
+
+# md-to-pdf pulls in full puppeteer, whose postinstall downloads a browser.
+# This service always runs against the system chromium (see Dockerfile /
+# PUPPETEER_EXECUTABLE_PATH), so the download is pure waste — skip it on
+# purpose instead of relying on the PUPPETEER_SKIP_DOWNLOAD env var.
+allowBuilds:
+  puppeteer: false
