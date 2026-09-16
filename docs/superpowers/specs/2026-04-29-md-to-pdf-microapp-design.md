@@ -87,15 +87,15 @@ These are pulled-from-the-air defaults; reasonable to dial up or down post-launc
 
 ## Error handling
 
-| Condition                          | HTTP   | Body                              | UI shows                                    |
-| ---------------------------------- | ------ | --------------------------------- | ------------------------------------------- |
-| Body > 1 MB                        | 413    | `{ error: "Markdown too large." }` | Inline message under button                 |
-| Rate limit hit                     | 429    | `{ error: "Too many requests." }`  | Inline + retry-after countdown              |
-| Markdown parse failure             | 400    | `{ error: <parser msg> }`          | Inline message                              |
-| Renderer timeout                   | 504    | `{ error: "Render timed out." }`   | Inline message, suggest retry               |
-| Renderer crash                     | 502    | `{ error: "Renderer error." }`     | Inline message, suggest retry               |
-| Chromium unhealthy on boot         | 503    | `{ error: "Service unavailable." }`| Inline message                              |
-| Network error in browser           | —      | —                                 | Inline "Connection failed, please retry"   |
+| Condition                  | HTTP | Body                                | UI shows                                 |
+| -------------------------- | ---- | ----------------------------------- | ---------------------------------------- |
+| Body > 1 MB                | 413  | `{ error: "Markdown too large." }`  | Inline message under button              |
+| Rate limit hit             | 429  | `{ error: "Too many requests." }`   | Inline + retry-after countdown           |
+| Markdown parse failure     | 400  | `{ error: <parser msg> }`           | Inline message                           |
+| Renderer timeout           | 504  | `{ error: "Render timed out." }`    | Inline message, suggest retry            |
+| Renderer crash             | 502  | `{ error: "Renderer error." }`      | Inline message, suggest retry            |
+| Chromium unhealthy on boot | 503  | `{ error: "Service unavailable." }` | Inline message                           |
+| Network error in browser   | —    | —                                   | Inline "Connection failed, please retry" |
 
 In all error paths, the textarea content remains intact.
 

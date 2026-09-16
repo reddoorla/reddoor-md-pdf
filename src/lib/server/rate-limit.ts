@@ -40,5 +40,5 @@ export function createRateLimiter(opts: RateLimiterOptions) {
 
 export const DEFAULT_RATE_LIMIT = {
   capacity: 10,
-  refillIntervalMs: 60_000
+  refillIntervalMs: 60_000,
 };

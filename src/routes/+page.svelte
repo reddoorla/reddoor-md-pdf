@@ -1,25 +1,25 @@
 <script lang="ts">
-  import logoUrl from '$lib/assets/logos/reddoor_logo.png';
+  import logoUrl from "$lib/assets/logos/reddoor_logo.png";
 
-  let markdown = $state('');
-  let filename = $state('');
+  let markdown = $state("");
+  let filename = $state("");
   let busy = $state(false);
   let errorMsg = $state<string | null>(null);
 
   function placeholderName(md: string): string {
     const m = md.match(/^\s*#\s+(.+?)\s*$/m);
-    if (!m) return 'document.pdf';
+    if (!m) return "document.pdf";
     const slug = m[1]
-      .normalize('NFKD')
-      .replace(/[̀-ͯ]/g, '')
+      .normalize("NFKD")
+      .replace(/[̀-ͯ]/g, "")
       .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/[^a-z0-9\s-]/g, "")
       .trim()
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-')
-      .replace(/^-|-$/g, '')
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "")
       .slice(0, 80);
-    return slug ? `${slug}.pdf` : 'document.pdf';
+    return slug ? `${slug}.pdf` : "document.pdf";
   }
 
   async function readDroppedFile(file: File): Promise<string> {
@@ -31,7 +31,7 @@
     const file = event.dataTransfer?.files?.[0];
     if (!file) return;
     if (!/\.md$|\.markdown$/i.test(file.name)) {
-      errorMsg = 'Drop a .md or .markdown file.';
+      errorMsg = "Drop a .md or .markdown file.";
       return;
     }
     markdown = await readDroppedFile(file);
@@ -47,17 +47,17 @@
     busy = true;
     errorMsg = null;
     try {
-      const res = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ markdown, filename: filename || undefined })
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ markdown, filename: filename || undefined }),
       });
 
       if (!res.ok) {
-        let msg = 'Connection failed, please retry.';
+        let msg = "Connection failed, please retry.";
         try {
           const data = await res.json();
-          if (typeof data?.error === 'string') msg = data.error;
+          if (typeof data?.error === "string") msg = data.error;
         } catch {
           /* response was not JSON; keep default */
         }
@@ -66,11 +66,11 @@
       }
 
       const blob = await res.blob();
-      const dispo = res.headers.get('Content-Disposition') ?? '';
+      const dispo = res.headers.get("Content-Disposition") ?? "";
       const match = /filename="([^"]+)"/.exec(dispo);
-      const name = match?.[1] ?? 'document.pdf';
+      const name = match?.[1] ?? "document.pdf";
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
+      const a = document.createElement("a");
       a.href = url;
       a.download = name;
       document.body.appendChild(a);
@@ -78,7 +78,7 @@
       a.remove();
       URL.revokeObjectURL(url);
     } catch {
-      errorMsg = 'Connection failed, please retry.';
+      errorMsg = "Connection failed, please retry.";
     } finally {
       busy = false;
     }
@@ -92,7 +92,8 @@
   </header>
 
   <p class="text-sm text-rd-body text-center">
-    Paste markdown or drop a <code class="rounded bg-rd-surface px-1 py-0.5">.md</code> file. Get a Reddoor-branded PDF.
+    Paste markdown or drop a <code class="rounded bg-rd-surface px-1 py-0.5">.md</code> file. Get a Reddoor-branded
+    PDF.
   </p>
 
   <textarea
@@ -120,7 +121,7 @@
       disabled={busy || !markdown.trim()}
       class="rounded bg-rd-red px-4 py-2 text-white transition disabled:cursor-not-allowed disabled:opacity-50"
     >
-      {busy ? 'Generating…' : 'Generate PDF'}
+      {busy ? "Generating…" : "Generate PDF"}
     </button>
     <div
       class="h-1 w-full overflow-hidden rounded bg-rd-light/40 transition-opacity duration-200"
