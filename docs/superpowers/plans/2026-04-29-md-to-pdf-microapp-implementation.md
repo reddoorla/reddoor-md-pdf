@@ -116,29 +116,29 @@ pnpm add -D @sveltejs/kit @sveltejs/adapter-node @sveltejs/vite-plugin-svelte sv
 - [ ] **Step 3: Create `svelte.config.js`**
 
 ```js
-import adapter from '@sveltejs/adapter-node';
-import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+import adapter from "@sveltejs/adapter-node";
+import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 
 export default {
   preprocess: vitePreprocess(),
   kit: {
-    adapter: adapter({ out: 'build' })
-  }
+    adapter: adapter({ out: "build" }),
+  },
 };
 ```
 
 - [ ] **Step 4: Create `vite.config.ts`**
 
 ```ts
-import { sveltekit } from '@sveltejs/kit/vite';
-import { defineConfig } from 'vite';
+import { sveltekit } from "@sveltejs/kit/vite";
+import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [sveltekit()],
   test: {
-    include: ['tests/unit/**/*.test.ts'],
-    environment: 'node'
-  }
+    include: ["tests/unit/**/*.test.ts"],
+    environment: "node",
+  },
 });
 ```
 
@@ -183,7 +183,7 @@ export default defineConfig({
 
 ```svelte
 <script lang="ts">
-  import '../app.css';
+  import "../app.css";
   let { children } = $props();
 </script>
 
@@ -193,8 +193,7 @@ export default defineConfig({
 - [ ] **Step 8: Create placeholder `src/routes/+page.svelte`**
 
 ```svelte
-<h1>Reddoor · Markdown → PDF</h1>
-<p>Scaffold complete. UI lands in Task 8.</p>
+<h1>Reddoor · Markdown → PDF</h1><p>Scaffold complete. UI lands in Task 8.</p>
 ```
 
 - [ ] **Step 9: Create empty `src/app.css`** (Tailwind lands in Task 2)
@@ -231,16 +230,16 @@ pnpm add -D tailwindcss @tailwindcss/vite
 - [ ] **Step 2: Add Tailwind plugin to `vite.config.ts`**
 
 ```ts
-import { sveltekit } from '@sveltejs/kit/vite';
-import tailwindcss from '@tailwindcss/vite';
-import { defineConfig } from 'vite';
+import { sveltekit } from "@sveltejs/kit/vite";
+import tailwindcss from "@tailwindcss/vite";
+import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [tailwindcss(), sveltekit()],
   test: {
-    include: ['tests/unit/**/*.test.ts'],
-    environment: 'node'
-  }
+    include: ["tests/unit/**/*.test.ts"],
+    environment: "node",
+  },
 });
 ```
 
@@ -252,10 +251,10 @@ Theme values mirror `pdf.config.cjs` so the UI reads as the same brand surface a
 @import "tailwindcss";
 
 @theme {
-  --color-rd-dark: #424B5A;
+  --color-rd-dark: #424b5a;
   --color-rd-body: #6d6e71;
-  --color-rd-red: #D71920;
-  --color-rd-light: #BBBDBF;
+  --color-rd-red: #d71920;
+  --color-rd-light: #bbbdbf;
   --color-rd-bg: #ffffff;
   --color-rd-surface: #f5f5f5;
 
@@ -264,7 +263,8 @@ Theme values mirror `pdf.config.cjs` so the UI reads as the same brand surface a
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
-html, body {
+html,
+body {
   background: var(--color-rd-bg);
   color: var(--color-rd-body);
   font-family: var(--font-sans);
@@ -312,53 +312,53 @@ The derivation rules are spelled out in the spec under **Filename derivation**.
 Create `tests/unit/filename.test.ts`:
 
 ```ts
-import { describe, expect, it } from 'vitest';
-import { deriveFilename } from '../../src/lib/server/filename';
+import { describe, expect, it } from "vitest";
+import { deriveFilename } from "../../src/lib/server/filename";
 
-describe('deriveFilename', () => {
-  it('returns sanitized user input with .pdf appended when caller provides a filename', () => {
-    expect(deriveFilename('My Doc', '# Ignored')).toBe('My Doc.pdf');
+describe("deriveFilename", () => {
+  it("returns sanitized user input with .pdf appended when caller provides a filename", () => {
+    expect(deriveFilename("My Doc", "# Ignored")).toBe("My Doc.pdf");
   });
 
-  it('preserves a user-supplied .pdf extension', () => {
-    expect(deriveFilename('report.pdf', '# Ignored')).toBe('report.pdf');
+  it("preserves a user-supplied .pdf extension", () => {
+    expect(deriveFilename("report.pdf", "# Ignored")).toBe("report.pdf");
   });
 
-  it('strips path separators and Windows-illegal chars but keeps spaces', () => {
-    expect(deriveFilename('a/b\\c:d*e?f"g<h>i|j', '# Ignored')).toBe('abcdefghij.pdf');
+  it("strips path separators and Windows-illegal chars but keeps spaces", () => {
+    expect(deriveFilename('a/b\\c:d*e?f"g<h>i|j', "# Ignored")).toBe("abcdefghij.pdf");
   });
 
-  it('preserves spaces inside user-supplied filenames', () => {
-    expect(deriveFilename('Quarterly  Report', '# Ignored')).toBe('Quarterly  Report.pdf');
+  it("preserves spaces inside user-supplied filenames", () => {
+    expect(deriveFilename("Quarterly  Report", "# Ignored")).toBe("Quarterly  Report.pdf");
   });
 
-  it('falls back to the first H1 slugified when no filename supplied', () => {
-    expect(deriveFilename(undefined, '# Reddoor RFP Handbook\n\ncontent')).toBe(
-      'reddoor-rfp-handbook.pdf'
+  it("falls back to the first H1 slugified when no filename supplied", () => {
+    expect(deriveFilename(undefined, "# Reddoor RFP Handbook\n\ncontent")).toBe(
+      "reddoor-rfp-handbook.pdf",
     );
   });
 
-  it('lowercases and ASCII-normalises unicode in the H1', () => {
-    expect(deriveFilename(undefined, '# Café Résumé — V2')).toBe('cafe-resume-v2.pdf');
+  it("lowercases and ASCII-normalises unicode in the H1", () => {
+    expect(deriveFilename(undefined, "# Café Résumé — V2")).toBe("cafe-resume-v2.pdf");
   });
 
-  it('truncates derived names to 80 chars before the extension', () => {
-    const longTitle = 'a '.repeat(100).trim();
+  it("truncates derived names to 80 chars before the extension", () => {
+    const longTitle = "a ".repeat(100).trim();
     const out = deriveFilename(undefined, `# ${longTitle}`);
-    expect(out.endsWith('.pdf')).toBe(true);
+    expect(out.endsWith(".pdf")).toBe(true);
     expect(out.length).toBeLessThanOrEqual(84); // 80 + '.pdf'
   });
 
-  it('falls back to document.pdf when there is no H1', () => {
-    expect(deriveFilename(undefined, 'no heading here')).toBe('document.pdf');
+  it("falls back to document.pdf when there is no H1", () => {
+    expect(deriveFilename(undefined, "no heading here")).toBe("document.pdf");
   });
 
-  it('falls back to document.pdf when the H1 slugifies to empty', () => {
-    expect(deriveFilename(undefined, '# !!!')).toBe('document.pdf');
+  it("falls back to document.pdf when the H1 slugifies to empty", () => {
+    expect(deriveFilename(undefined, "# !!!")).toBe("document.pdf");
   });
 
   it('treats an empty user filename string as "not provided"', () => {
-    expect(deriveFilename('', '# Hello World')).toBe('hello-world.pdf');
+    expect(deriveFilename("", "# Hello World")).toBe("hello-world.pdf");
   });
 });
 ```
@@ -378,20 +378,20 @@ const MAX_DERIVED_LENGTH = 80;
 
 function slugify(input: string): string {
   return input
-    .normalize('NFKD')
-    .replace(/[̀-ͯ]/g, '')
+    .normalize("NFKD")
+    .replace(/[̀-ͯ]/g, "")
     .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/[^a-z0-9\s-]/g, "")
     .trim()
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
 }
 
 function sanitizeUserFilename(name: string): string {
-  const stripped = name.replace(/[\\/:*?"<>|\x00-\x1f]/g, '').trim();
-  if (!stripped) return '';
-  return stripped.toLowerCase().endsWith('.pdf') ? stripped : `${stripped}.pdf`;
+  const stripped = name.replace(/[\\/:*?"<>|\x00-\x1f]/g, "").trim();
+  if (!stripped) return "";
+  return stripped.toLowerCase().endsWith(".pdf") ? stripped : `${stripped}.pdf`;
 }
 
 function firstH1(markdown: string): string | null {
@@ -411,7 +411,7 @@ export function deriveFilename(userInput: string | undefined, markdown: string):
     if (slug) return `${slug}.pdf`;
   }
 
-  return 'document.pdf';
+  return "document.pdf";
 }
 ```
 
@@ -444,31 +444,31 @@ git commit -m "feat: filename derivation from user input or markdown H1"
 Create `tests/unit/size-limit.test.ts`:
 
 ```ts
-import { describe, expect, it } from 'vitest';
-import { MAX_MARKDOWN_BYTES, exceedsMarkdownLimit } from '../../src/lib/server/size-limit';
+import { describe, expect, it } from "vitest";
+import { MAX_MARKDOWN_BYTES, exceedsMarkdownLimit } from "../../src/lib/server/size-limit";
 
-describe('size-limit', () => {
-  it('exposes a 1 MB cap', () => {
+describe("size-limit", () => {
+  it("exposes a 1 MB cap", () => {
     expect(MAX_MARKDOWN_BYTES).toBe(1024 * 1024);
   });
 
-  it('returns false for a small ASCII string', () => {
-    expect(exceedsMarkdownLimit('hello')).toBe(false);
+  it("returns false for a small ASCII string", () => {
+    expect(exceedsMarkdownLimit("hello")).toBe(false);
   });
 
-  it('returns false at exactly the limit', () => {
-    const atLimit = 'a'.repeat(MAX_MARKDOWN_BYTES);
+  it("returns false at exactly the limit", () => {
+    const atLimit = "a".repeat(MAX_MARKDOWN_BYTES);
     expect(exceedsMarkdownLimit(atLimit)).toBe(false);
   });
 
-  it('returns true at limit + 1 byte', () => {
-    const overLimit = 'a'.repeat(MAX_MARKDOWN_BYTES + 1);
+  it("returns true at limit + 1 byte", () => {
+    const overLimit = "a".repeat(MAX_MARKDOWN_BYTES + 1);
     expect(exceedsMarkdownLimit(overLimit)).toBe(true);
   });
 
-  it('measures bytes (UTF-8), not characters', () => {
+  it("measures bytes (UTF-8), not characters", () => {
     // '🔴' = 4 UTF-8 bytes; 300_000 of them = 1_200_000 bytes > 1 MB
-    const heavy = '🔴'.repeat(300_000);
+    const heavy = "🔴".repeat(300_000);
     expect(exceedsMarkdownLimit(heavy)).toBe(true);
   });
 });
@@ -488,7 +488,7 @@ Expected: FAIL with module-not-found.
 export const MAX_MARKDOWN_BYTES = 1024 * 1024;
 
 export function exceedsMarkdownLimit(markdown: string): boolean {
-  return Buffer.byteLength(markdown, 'utf-8') > MAX_MARKDOWN_BYTES;
+  return Buffer.byteLength(markdown, "utf-8") > MAX_MARKDOWN_BYTES;
 }
 ```
 
@@ -523,27 +523,27 @@ In-memory token bucket, keyed by client IP. Single Render web service = one proc
 Create `tests/unit/rate-limit.test.ts`:
 
 ```ts
-import { describe, expect, it } from 'vitest';
-import { createRateLimiter } from '../../src/lib/server/rate-limit';
+import { describe, expect, it } from "vitest";
+import { createRateLimiter } from "../../src/lib/server/rate-limit";
 
-describe('createRateLimiter', () => {
-  it('allows requests up to the capacity', () => {
+describe("createRateLimiter", () => {
+  it("allows requests up to the capacity", () => {
     let now = 0;
     const limiter = createRateLimiter({ capacity: 3, refillIntervalMs: 60_000, now: () => now });
 
-    expect(limiter.take('1.1.1.1')).toEqual({ allowed: true });
-    expect(limiter.take('1.1.1.1')).toEqual({ allowed: true });
-    expect(limiter.take('1.1.1.1')).toEqual({ allowed: true });
+    expect(limiter.take("1.1.1.1")).toEqual({ allowed: true });
+    expect(limiter.take("1.1.1.1")).toEqual({ allowed: true });
+    expect(limiter.take("1.1.1.1")).toEqual({ allowed: true });
   });
 
-  it('rejects the next request and reports retryAfterMs', () => {
+  it("rejects the next request and reports retryAfterMs", () => {
     let now = 0;
     const limiter = createRateLimiter({ capacity: 2, refillIntervalMs: 60_000, now: () => now });
 
-    limiter.take('1.1.1.1');
-    limiter.take('1.1.1.1');
+    limiter.take("1.1.1.1");
+    limiter.take("1.1.1.1");
 
-    const result = limiter.take('1.1.1.1');
+    const result = limiter.take("1.1.1.1");
     expect(result.allowed).toBe(false);
     if (!result.allowed) {
       expect(result.retryAfterMs).toBeGreaterThan(0);
@@ -551,39 +551,39 @@ describe('createRateLimiter', () => {
     }
   });
 
-  it('refills one token per interval/capacity step', () => {
+  it("refills one token per interval/capacity step", () => {
     let now = 0;
     const limiter = createRateLimiter({ capacity: 2, refillIntervalMs: 60_000, now: () => now });
 
-    limiter.take('1.1.1.1');
-    limiter.take('1.1.1.1');
-    expect(limiter.take('1.1.1.1').allowed).toBe(false);
+    limiter.take("1.1.1.1");
+    limiter.take("1.1.1.1");
+    expect(limiter.take("1.1.1.1").allowed).toBe(false);
 
     now += 30_000; // half an interval -> one token back for capacity 2
-    expect(limiter.take('1.1.1.1').allowed).toBe(true);
-    expect(limiter.take('1.1.1.1').allowed).toBe(false);
+    expect(limiter.take("1.1.1.1").allowed).toBe(true);
+    expect(limiter.take("1.1.1.1").allowed).toBe(false);
   });
 
-  it('keeps separate buckets per key', () => {
+  it("keeps separate buckets per key", () => {
     let now = 0;
     const limiter = createRateLimiter({ capacity: 1, refillIntervalMs: 60_000, now: () => now });
 
-    expect(limiter.take('a').allowed).toBe(true);
-    expect(limiter.take('b').allowed).toBe(true);
-    expect(limiter.take('a').allowed).toBe(false);
+    expect(limiter.take("a").allowed).toBe(true);
+    expect(limiter.take("b").allowed).toBe(true);
+    expect(limiter.take("a").allowed).toBe(false);
   });
 
-  it('caps tokens at capacity even after long idle', () => {
+  it("caps tokens at capacity even after long idle", () => {
     let now = 0;
     const limiter = createRateLimiter({ capacity: 2, refillIntervalMs: 60_000, now: () => now });
 
-    limiter.take('a');
-    limiter.take('a');
+    limiter.take("a");
+    limiter.take("a");
     now += 10 * 60_000;
 
-    expect(limiter.take('a').allowed).toBe(true);
-    expect(limiter.take('a').allowed).toBe(true);
-    expect(limiter.take('a').allowed).toBe(false);
+    expect(limiter.take("a").allowed).toBe(true);
+    expect(limiter.take("a").allowed).toBe(true);
+    expect(limiter.take("a").allowed).toBe(false);
   });
 });
 ```
@@ -641,7 +641,7 @@ export function createRateLimiter(opts: RateLimiterOptions) {
 
 export const DEFAULT_RATE_LIMIT = {
   capacity: 10,
-  refillIntervalMs: 60_000
+  refillIntervalMs: 60_000,
 };
 ```
 
@@ -681,44 +681,40 @@ pnpm add marked
 
 Create `tests/unit/markdown-to-html.test.ts`:
 
-```ts
-import { describe, expect, it } from 'vitest';
-import { markdownToHtml } from '../../src/lib/server/markdown-to-html';
+````ts
+import { describe, expect, it } from "vitest";
+import { markdownToHtml } from "../../src/lib/server/markdown-to-html";
 
-describe('markdownToHtml', () => {
-  it('wraps body in markdown-body class', () => {
-    const html = markdownToHtml('# hello');
+describe("markdownToHtml", () => {
+  it("wraps body in markdown-body class", () => {
+    const html = markdownToHtml("# hello");
     expect(html).toContain('<body class="markdown-body">');
   });
 
-  it('inlines CSS from pdf.config.cjs into a <style> tag', () => {
-    const html = markdownToHtml('# hello');
+  it("inlines CSS from pdf.config.cjs into a <style> tag", () => {
+    const html = markdownToHtml("# hello");
     expect(html).toMatch(/<style>[\s\S]*color:\s*#6d6e71/);
   });
 
-  it('renders heading-only fixture deterministically', () => {
-    expect(markdownToHtml('# Reddoor RFP Handbook')).toMatchSnapshot();
+  it("renders heading-only fixture deterministically", () => {
+    expect(markdownToHtml("# Reddoor RFP Handbook")).toMatchSnapshot();
   });
 
-  it('renders a table fixture deterministically', () => {
-    const md = [
-      '| col a | col b |',
-      '| ----- | ----- |',
-      '| one   | two   |'
-    ].join('\n');
+  it("renders a table fixture deterministically", () => {
+    const md = ["| col a | col b |", "| ----- | ----- |", "| one   | two   |"].join("\n");
     expect(markdownToHtml(md)).toMatchSnapshot();
   });
 
-  it('renders a link fixture deterministically', () => {
-    expect(markdownToHtml('See [Reddoor](https://reddoor.com).')).toMatchSnapshot();
+  it("renders a link fixture deterministically", () => {
+    expect(markdownToHtml("See [Reddoor](https://reddoor.com).")).toMatchSnapshot();
   });
 
-  it('renders a fenced code block fixture deterministically', () => {
-    const md = '```js\nconst x = 1;\n```\n';
+  it("renders a fenced code block fixture deterministically", () => {
+    const md = "```js\nconst x = 1;\n```\n";
     expect(markdownToHtml(md)).toMatchSnapshot();
   });
 });
-```
+````
 
 - [ ] **Step 3: Run the test, verify it fails**
 
@@ -733,7 +729,7 @@ Expected: FAIL with module-not-found.
 Create `src/lib/server/pdf-config.d.ts`:
 
 ```ts
-declare module '*/pdf.config.cjs' {
+declare module "*/pdf.config.cjs" {
   const config: {
     css: string;
     pdf_options: Record<string, unknown>;
@@ -747,23 +743,23 @@ declare module '*/pdf.config.cjs' {
 Vite bundles the `.cjs` config into the server output via static `import`. Avoid `createRequire(import.meta.url)` here — after build, `import.meta.url` resolves to the bundled file location, not the source, and the relative path breaks.
 
 ```ts
-import { marked } from 'marked';
-import pdfConfig from '../../../pdf.config.cjs';
+import { marked } from "marked";
+import pdfConfig from "../../../pdf.config.cjs";
 
 export function markdownToHtml(markdown: string): string {
   const body = marked.parse(markdown, { async: false }) as string;
   return [
-    '<!DOCTYPE html>',
+    "<!DOCTYPE html>",
     '<html lang="en">',
-    '<head>',
+    "<head>",
     '<meta charset="utf-8">',
     `<style>${pdfConfig.css}</style>`,
-    '</head>',
+    "</head>",
     '<body class="markdown-body">',
     body,
-    '</body>',
-    '</html>'
-  ].join('\n');
+    "</body>",
+    "</html>",
+  ].join("\n");
 }
 ```
 
@@ -812,35 +808,32 @@ pnpm add md-to-pdf puppeteer-core
 Create `tests/unit/renderer.test.ts`. The renderer test is **gated**: it only runs when a Chromium binary is available. CI/Docker will have one; a fresh local checkout may not.
 
 ```ts
-import { existsSync } from 'node:fs';
-import { describe, expect, it } from 'vitest';
-import {
-  RendererTimeoutError,
-  renderMarkdownToPdf
-} from '../../src/lib/server/renderer';
+import { existsSync } from "node:fs";
+import { describe, expect, it } from "vitest";
+import { RendererTimeoutError, renderMarkdownToPdf } from "../../src/lib/server/renderer";
 
 const chromiumPath =
   process.env.PUPPETEER_EXECUTABLE_PATH ??
-  (existsSync('/usr/bin/chromium') ? '/usr/bin/chromium' : null) ??
-  (existsSync('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome')
-    ? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+  (existsSync("/usr/bin/chromium") ? "/usr/bin/chromium" : null) ??
+  (existsSync("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome")
+    ? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
     : null);
 
 const skipIfNoChromium = chromiumPath ? describe : describe.skip;
 
-skipIfNoChromium('renderMarkdownToPdf', () => {
-  it('returns a buffer that begins with %PDF- and is > 1 KB', async () => {
+skipIfNoChromium("renderMarkdownToPdf", () => {
+  it("returns a buffer that begins with %PDF- and is > 1 KB", async () => {
     process.env.PUPPETEER_EXECUTABLE_PATH = chromiumPath!;
-    const buf = await renderMarkdownToPdf('# Hello\n\nSome body text.');
+    const buf = await renderMarkdownToPdf("# Hello\n\nSome body text.");
     expect(buf.length).toBeGreaterThan(1024);
-    expect(buf.slice(0, 5).toString('utf-8')).toBe('%PDF-');
+    expect(buf.slice(0, 5).toString("utf-8")).toBe("%PDF-");
   }, 30_000);
 
-  it('rejects with RendererTimeoutError when the deadline is exceeded', async () => {
+  it("rejects with RendererTimeoutError when the deadline is exceeded", async () => {
     process.env.PUPPETEER_EXECUTABLE_PATH = chromiumPath!;
-    await expect(
-      renderMarkdownToPdf('# tiny doc', { timeoutMs: 1 })
-    ).rejects.toBeInstanceOf(RendererTimeoutError);
+    await expect(renderMarkdownToPdf("# tiny doc", { timeoutMs: 1 })).rejects.toBeInstanceOf(
+      RendererTimeoutError,
+    );
   }, 10_000);
 });
 ```
@@ -858,55 +851,55 @@ Expected: FAIL with module-not-found (or skipped if no Chromium present — that
 The `pdf-config.d.ts` declaration from Task 6 covers the typing for this static import.
 
 ```ts
-import { mdToPdf } from 'md-to-pdf';
-import pdfConfig from '../../../pdf.config.cjs';
+import { mdToPdf } from "md-to-pdf";
+import pdfConfig from "../../../pdf.config.cjs";
 
 export class RendererTimeoutError extends Error {
-  constructor(message = 'Render timed out.') {
+  constructor(message = "Render timed out.") {
     super(message);
-    this.name = 'RendererTimeoutError';
+    this.name = "RendererTimeoutError";
   }
 }
 
 export class RendererError extends Error {
-  constructor(message = 'Renderer error.', readonly cause?: unknown) {
+  constructor(
+    message = "Renderer error.",
+    readonly cause?: unknown,
+  ) {
     super(message);
-    this.name = 'RendererError';
+    this.name = "RendererError";
   }
 }
 
 export type RenderOptions = { timeoutMs?: number };
 
 const DEFAULT_TIMEOUT_MS = 30_000;
-const DEFAULT_CHROMIUM = '/usr/bin/chromium';
+const DEFAULT_CHROMIUM = "/usr/bin/chromium";
 
 export async function renderMarkdownToPdf(
   markdown: string,
-  opts: RenderOptions = {}
+  opts: RenderOptions = {},
 ): Promise<Buffer> {
   const timeoutMs = opts.timeoutMs ?? DEFAULT_TIMEOUT_MS;
   const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH ?? DEFAULT_CHROMIUM;
 
   const renderPromise = (async () => {
     try {
-      const result = await mdToPdf(
-        { content: markdown },
-        {
-          ...pdfConfig,
-          launch_options: {
-            executablePath,
-            headless: true,
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
-          }
-        } as never
-      );
+      const result = await mdToPdf({ content: markdown }, {
+        ...pdfConfig,
+        launch_options: {
+          executablePath,
+          headless: true,
+          args: ["--no-sandbox", "--disable-setuid-sandbox"],
+        },
+      } as never);
       if (!result || !result.content) {
-        throw new RendererError('Renderer produced no output.');
+        throw new RendererError("Renderer produced no output.");
       }
       return Buffer.from(result.content);
     } catch (err) {
       if (err instanceof RendererError) throw err;
-      throw new RendererError('Renderer error.', err);
+      throw new RendererError("Renderer error.", err);
     }
   })();
 
@@ -951,26 +944,22 @@ This wires the helpers together. It is intentionally thin: parse JSON, check siz
 - [ ] **Step 1: Implement the endpoint**
 
 ```ts
-import { error, json } from '@sveltejs/kit';
-import type { RequestHandler } from './$types';
-import { deriveFilename } from '$lib/server/filename';
-import { exceedsMarkdownLimit } from '$lib/server/size-limit';
-import { DEFAULT_RATE_LIMIT, createRateLimiter } from '$lib/server/rate-limit';
-import {
-  RendererError,
-  RendererTimeoutError,
-  renderMarkdownToPdf
-} from '$lib/server/renderer';
+import { error, json } from "@sveltejs/kit";
+import type { RequestHandler } from "./$types";
+import { deriveFilename } from "$lib/server/filename";
+import { exceedsMarkdownLimit } from "$lib/server/size-limit";
+import { DEFAULT_RATE_LIMIT, createRateLimiter } from "$lib/server/rate-limit";
+import { RendererError, RendererTimeoutError, renderMarkdownToPdf } from "$lib/server/renderer";
 
 const limiter = createRateLimiter(DEFAULT_RATE_LIMIT);
 
 function clientIp(request: Request, getClientAddress: () => string): string {
-  const fwd = request.headers.get('x-forwarded-for');
-  if (fwd) return fwd.split(',')[0].trim();
+  const fwd = request.headers.get("x-forwarded-for");
+  if (fwd) return fwd.split(",")[0].trim();
   try {
     return getClientAddress();
   } catch {
-    return 'unknown';
+    return "unknown";
   }
 }
 
@@ -979,13 +968,13 @@ export const POST: RequestHandler = async ({ request, getClientAddress }) => {
   try {
     body = await request.json();
   } catch {
-    return json({ error: 'Body must be valid JSON.' }, { status: 400 });
+    return json({ error: "Body must be valid JSON." }, { status: 400 });
   }
 
   if (
     !body ||
-    typeof body !== 'object' ||
-    typeof (body as Record<string, unknown>).markdown !== 'string'
+    typeof body !== "object" ||
+    typeof (body as Record<string, unknown>).markdown !== "string"
   ) {
     return json({ error: 'Field "markdown" must be a string.' }, { status: 400 });
   }
@@ -993,7 +982,7 @@ export const POST: RequestHandler = async ({ request, getClientAddress }) => {
   const { markdown, filename } = body as { markdown: string; filename?: string };
 
   if (exceedsMarkdownLimit(markdown)) {
-    return json({ error: 'Markdown too large.' }, { status: 413 });
+    return json({ error: "Markdown too large." }, { status: 413 });
   }
 
   const ip = clientIp(request, getClientAddress);
@@ -1001,8 +990,8 @@ export const POST: RequestHandler = async ({ request, getClientAddress }) => {
   if (!limit.allowed) {
     const retrySec = Math.ceil(limit.retryAfterMs / 1000);
     return json(
-      { error: 'Too many requests.' },
-      { status: 429, headers: { 'Retry-After': String(retrySec) } }
+      { error: "Too many requests." },
+      { status: 429, headers: { "Retry-After": String(retrySec) } },
     );
   }
 
@@ -1012,19 +1001,19 @@ export const POST: RequestHandler = async ({ request, getClientAddress }) => {
     return new Response(pdf, {
       status: 200,
       headers: {
-        'Content-Type': 'application/pdf',
-        'Content-Disposition': `attachment; filename="${out}"`,
-        'Content-Length': String(pdf.length)
-      }
+        "Content-Type": "application/pdf",
+        "Content-Disposition": `attachment; filename="${out}"`,
+        "Content-Length": String(pdf.length),
+      },
     });
   } catch (err) {
     if (err instanceof RendererTimeoutError) {
-      return json({ error: 'Render timed out.' }, { status: 504 });
+      return json({ error: "Render timed out." }, { status: 504 });
     }
     if (err instanceof RendererError) {
-      return json({ error: 'Renderer error.' }, { status: 502 });
+      return json({ error: "Renderer error." }, { status: 502 });
     }
-    throw error(500, 'Unexpected error.');
+    throw error(500, "Unexpected error.");
   }
 };
 ```
@@ -1077,11 +1066,11 @@ The smoke check launches Chromium briefly (with the same path the renderer uses)
 - [ ] **Step 1: Implement the endpoint**
 
 ```ts
-import { json } from '@sveltejs/kit';
-import puppeteer from 'puppeteer-core';
-import type { RequestHandler } from './$types';
+import { json } from "@sveltejs/kit";
+import puppeteer from "puppeteer-core";
+import type { RequestHandler } from "./$types";
 
-const DEFAULT_CHROMIUM = '/usr/bin/chromium';
+const DEFAULT_CHROMIUM = "/usr/bin/chromium";
 
 export const GET: RequestHandler = async () => {
   const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH ?? DEFAULT_CHROMIUM;
@@ -1089,15 +1078,12 @@ export const GET: RequestHandler = async () => {
     const browser = await puppeteer.launch({
       executablePath,
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
     await browser.close();
-    return json({ status: 'ok' });
+    return json({ status: "ok" });
   } catch (err) {
-    return json(
-      { status: 'unavailable', detail: (err as Error).message },
-      { status: 503 }
-    );
+    return json({ status: "unavailable", detail: (err as Error).message }, { status: 503 });
   }
 };
 ```
@@ -1136,15 +1122,15 @@ UI matches the spec: single column, max-width ~720px, mobile-first, textarea is 
 Append to `src/app.css`:
 
 ```css
-@import url('https://use.typekit.net/alh8out.css');
-@import url('https://fonts.googleapis.com/css2?family=Besley:wght@300;400;600&display=swap');
+@import url("https://use.typekit.net/alh8out.css");
+@import url("https://fonts.googleapis.com/css2?family=Besley:wght@300;400;600&display=swap");
 ```
 
 Move these to the top of the file so they fire before Tailwind's reset, replacing the prior `@import "tailwindcss";` order:
 
 ```css
-@import url('https://use.typekit.net/alh8out.css');
-@import url('https://fonts.googleapis.com/css2?family=Besley:wght@300;400;600&display=swap');
+@import url("https://use.typekit.net/alh8out.css");
+@import url("https://fonts.googleapis.com/css2?family=Besley:wght@300;400;600&display=swap");
 @import "tailwindcss";
 ```
 
@@ -1152,25 +1138,25 @@ Move these to the top of the file so they fire before Tailwind's reset, replacin
 
 ```svelte
 <script lang="ts">
-  import logoUrl from '$lib/assets/logos/logoFull.svg';
+  import logoUrl from "$lib/assets/logos/logoFull.svg";
 
-  let markdown = $state('');
-  let filename = $state('');
+  let markdown = $state("");
+  let filename = $state("");
   let busy = $state(false);
   let errorMsg = $state<string | null>(null);
 
   function placeholderName(md: string): string {
     const m = md.match(/^\s*#\s+(.+?)\s*$/m);
-    if (!m) return 'document.pdf';
+    if (!m) return "document.pdf";
     const slug = m[1]
-      .normalize('NFKD')
-      .replace(/[̀-ͯ]/g, '')
+      .normalize("NFKD")
+      .replace(/[̀-ͯ]/g, "")
       .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/[^a-z0-9\s-]/g, "")
       .trim()
-      .replace(/\s+/g, '-')
+      .replace(/\s+/g, "-")
       .slice(0, 80);
-    return slug ? `${slug}.pdf` : 'document.pdf';
+    return slug ? `${slug}.pdf` : "document.pdf";
   }
 
   async function readDroppedFile(file: File): Promise<string> {
@@ -1182,7 +1168,7 @@ Move these to the top of the file so they fire before Tailwind's reset, replacin
     const file = event.dataTransfer?.files?.[0];
     if (!file) return;
     if (!/\.md$|\.markdown$/i.test(file.name)) {
-      errorMsg = 'Drop a .md or .markdown file.';
+      errorMsg = "Drop a .md or .markdown file.";
       return;
     }
     markdown = await readDroppedFile(file);
@@ -1198,17 +1184,17 @@ Move these to the top of the file so they fire before Tailwind's reset, replacin
     busy = true;
     errorMsg = null;
     try {
-      const res = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ markdown, filename: filename || undefined })
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ markdown, filename: filename || undefined }),
       });
 
       if (!res.ok) {
-        let msg = 'Connection failed, please retry.';
+        let msg = "Connection failed, please retry.";
         try {
           const data = await res.json();
-          if (typeof data?.error === 'string') msg = data.error;
+          if (typeof data?.error === "string") msg = data.error;
         } catch {
           /* response was not JSON; keep default */
         }
@@ -1217,11 +1203,11 @@ Move these to the top of the file so they fire before Tailwind's reset, replacin
       }
 
       const blob = await res.blob();
-      const dispo = res.headers.get('Content-Disposition') ?? '';
+      const dispo = res.headers.get("Content-Disposition") ?? "";
       const match = /filename="([^"]+)"/.exec(dispo);
-      const name = match?.[1] ?? 'document.pdf';
+      const name = match?.[1] ?? "document.pdf";
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
+      const a = document.createElement("a");
       a.href = url;
       a.download = name;
       document.body.appendChild(a);
@@ -1229,7 +1215,7 @@ Move these to the top of the file so they fire before Tailwind's reset, replacin
       a.remove();
       URL.revokeObjectURL(url);
     } catch {
-      errorMsg = 'Connection failed, please retry.';
+      errorMsg = "Connection failed, please retry.";
     } finally {
       busy = false;
     }
@@ -1243,7 +1229,8 @@ Move these to the top of the file so they fire before Tailwind's reset, replacin
   </header>
 
   <p class="text-sm text-rd-body">
-    Paste markdown or drop a <code class="rounded bg-rd-surface px-1 py-0.5">.md</code> file. Get a Reddoor-branded PDF.
+    Paste markdown or drop a <code class="rounded bg-rd-surface px-1 py-0.5">.md</code> file. Get a Reddoor-branded
+    PDF.
   </p>
 
   <textarea
@@ -1270,7 +1257,7 @@ Move these to the top of the file so they fire before Tailwind's reset, replacin
     disabled={busy || !markdown.trim()}
     class="rounded bg-rd-red px-4 py-2 text-white transition disabled:cursor-not-allowed disabled:opacity-50"
   >
-    {busy ? 'Generating…' : 'Generate PDF'}
+    {busy ? "Generating…" : "Generate PDF"}
   </button>
 
   {#if errorMsg}
@@ -1320,41 +1307,41 @@ pnpm exec playwright install chromium
 - [ ] **Step 2: Create `playwright.config.ts`**
 
 ```ts
-import { defineConfig } from '@playwright/test';
+import { defineConfig } from "@playwright/test";
 
 export default defineConfig({
-  testDir: 'tests/integration',
+  testDir: "tests/integration",
   timeout: 60_000,
-  use: { baseURL: 'http://localhost:5173' },
+  use: { baseURL: "http://localhost:5173" },
   webServer: {
-    command: 'pnpm dev',
-    url: 'http://localhost:5173',
+    command: "pnpm dev",
+    url: "http://localhost:5173",
     reuseExistingServer: !process.env.CI,
-    timeout: 60_000
-  }
+    timeout: 60_000,
+  },
 });
 ```
 
 - [ ] **Step 3: Create `tests/integration/generate.spec.ts`**
 
 ```ts
-import { expect, test } from '@playwright/test';
-import { readFileSync } from 'node:fs';
+import { expect, test } from "@playwright/test";
+import { readFileSync } from "node:fs";
 
-test('generates a PDF from pasted markdown', async ({ page }) => {
-  await page.goto('/');
+test("generates a PDF from pasted markdown", async ({ page }) => {
+  await page.goto("/");
 
-  await page.locator('textarea').fill('# Playwright Smoke\n\nHello PDF.');
+  await page.locator("textarea").fill("# Playwright Smoke\n\nHello PDF.");
 
-  const downloadPromise = page.waitForEvent('download');
-  await page.getByRole('button', { name: /generate pdf/i }).click();
+  const downloadPromise = page.waitForEvent("download");
+  await page.getByRole("button", { name: /generate pdf/i }).click();
   const download = await downloadPromise;
 
   const tmp = await download.path();
   expect(tmp).toBeTruthy();
   const bytes = readFileSync(tmp!);
   expect(bytes.length).toBeGreaterThan(1024);
-  expect(bytes.slice(0, 5).toString('utf-8')).toBe('%PDF-');
+  expect(bytes.slice(0, 5).toString("utf-8")).toBe("%PDF-");
 });
 ```
 
@@ -1688,28 +1675,28 @@ git push origin main
 
 ## Spec Coverage Check
 
-| Spec section / requirement | Where it's implemented |
-| --- | --- |
-| SvelteKit framework | Task 1 |
-| Tailwind v4 with Reddoor palette/fonts | Task 2 + Task 10 |
-| `md-to-pdf` + `pdf.config.cjs`, byte-similar to current export | Task 7 |
-| `node:22-slim` + system Chromium, `PUPPETEER_SKIP_DOWNLOAD=1` | Task 12 |
-| Hosted deploy with idle stop / wake (Render free tier instead of Fly — spec lists Render as acceptable alternative) | Task 13 |
-| Single-page UI, max-width 720px, mobile-first | Task 10 |
-| Textarea-as-drop-target | Task 10 |
-| Optional filename input with auto-derived placeholder | Task 10 + Task 3 |
-| `POST /api/generate` JSON in, PDF out | Task 8 |
-| Filename derivation rules (H1 → slug, fallback to `document.pdf`) | Task 3 |
-| 1 MB markdown size cap (413) | Task 4 + Task 8 |
-| 10 / IP / minute rate limit (429 + Retry-After) | Task 5 + Task 8 |
-| 30 s render timeout (504) | Task 7 + Task 8 |
-| Renderer crash mapped to 502 | Task 7 + Task 8 |
-| Textarea content preserved on error | Task 10 |
-| Vitest unit suite (renderer, slug, soft-gate helpers) | Tasks 3–7 |
-| Snapshot intermediate HTML for fixtures (heading, table, link, code) | Task 6 |
-| Playwright happy-path | Task 11 |
-| `/healthz` for Render health checks | Task 9 + Task 13 |
-| README + favicon | Task 14 |
+| Spec section / requirement                                                                                          | Where it's implemented |
+| ------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| SvelteKit framework                                                                                                 | Task 1                 |
+| Tailwind v4 with Reddoor palette/fonts                                                                              | Task 2 + Task 10       |
+| `md-to-pdf` + `pdf.config.cjs`, byte-similar to current export                                                      | Task 7                 |
+| `node:22-slim` + system Chromium, `PUPPETEER_SKIP_DOWNLOAD=1`                                                       | Task 12                |
+| Hosted deploy with idle stop / wake (Render free tier instead of Fly — spec lists Render as acceptable alternative) | Task 13                |
+| Single-page UI, max-width 720px, mobile-first                                                                       | Task 10                |
+| Textarea-as-drop-target                                                                                             | Task 10                |
+| Optional filename input with auto-derived placeholder                                                               | Task 10 + Task 3       |
+| `POST /api/generate` JSON in, PDF out                                                                               | Task 8                 |
+| Filename derivation rules (H1 → slug, fallback to `document.pdf`)                                                   | Task 3                 |
+| 1 MB markdown size cap (413)                                                                                        | Task 4 + Task 8        |
+| 10 / IP / minute rate limit (429 + Retry-After)                                                                     | Task 5 + Task 8        |
+| 30 s render timeout (504)                                                                                           | Task 7 + Task 8        |
+| Renderer crash mapped to 502                                                                                        | Task 7 + Task 8        |
+| Textarea content preserved on error                                                                                 | Task 10                |
+| Vitest unit suite (renderer, slug, soft-gate helpers)                                                               | Tasks 3–7              |
+| Snapshot intermediate HTML for fixtures (heading, table, link, code)                                                | Task 6                 |
+| Playwright happy-path                                                                                               | Task 11                |
+| `/healthz` for Render health checks                                                                                 | Task 9 + Task 13       |
+| README + favicon                                                                                                    | Task 14                |
 
 **Deferred from spec (called out explicitly):**
 
