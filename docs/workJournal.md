@@ -51,3 +51,18 @@ behind `origin/main` (`aa55487`)** — all five that maintenance work, so this
 checkout has a stale lockfile and no `.github/` in it at all. This branch was
 cut from the local tip and adds two files. No open PRs; the two stale local
 branches are already contained in `origin/main`.
+
+## 2026-10-26 — SvelteKit 3 and adapter-node 6 (kit 3 migration PR)
+
+Kit 2 → 3.1.0 and adapter-node 5 → 6.0.0, for GHSA-27mw-82g8-phjj. This supersedes Renovate's #22 (kit 3) and #16 (adapter-node 6). One PR into `main`, as the operator chose today for reddoor-starter-blux and canvas-starter. This repo's `CLAUDE.md` says nothing about `staging`, and the staging flow's machinery is Netlify's, which this Render service does not use. Render auto-deploys `main`, so the merge is the deploy.
+
+The port is small, because this app uses almost none of kit's surface:
+
+- `svelte.config.js` became `sveltekit.config.js`, passed to `sveltekit(kitConfig)`;
+- `tsconfig` extends `$app/tsconfig`;
+- the `$lib` alias is declared, because kit 3 no longer supplies it: without it svelte-check found 4 unresolved `$lib/server/*` imports in `api/generate`;
+- the `json` helper is still exported in 3.1.0, so the endpoints are unchanged.
+
+Belief corrected on contact: that the Docker image's Node would do. Kit 3.1.0's `engines` asks for Node >= 22.17. The Dockerfile pinned `node:22.13-slim` in both stages, and CI's `node-version: 22` resolves to a current 22.x, so CI would never have shown it. Both stages are now `node:22.22-slim`.
+
+Measured. Lint, svelte-check (0/0), the build, and 26 unit tests pass, the renderer test included, with a real Chromium. Both builds were run with `node build` on Node 22.22 as the image runs them, head and `main` side by side. They return the same `/healthz`, and the same 2-page, 25,957-byte PDF for the same markdown. A bad body gets the same 400, and the page and 404 statuses match. The Playwright test passes with `PUPPETEER_EXECUTABLE_PATH` set. Without it, the dev server's renderer falls back to `/usr/bin/chromium`, which a cloud container lacks, so the test times out waiting for the download; that is the environment, not kit 3.
