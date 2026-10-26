@@ -13,7 +13,8 @@ export default {
   // from the ORIGIN environment variable at runtime, which render.yaml set
   // (2026-04-29, to stop a CSRF 403 in production); adapter-node 6 no longer
   // reads ORIGIN and takes it from here at build time instead. Without it the
-  // origin falls back to the request's Host header with https.
+  // origin falls back to the request's Host header with https. A custom domain
+  // therefore needs this line changed and a rebuild, not an env change.
   paths: { origin: "https://reddoor-md-pdf.onrender.com" },
   // `alias` is deprecated in kit 3 (a build warning) in favour of package.json
   // subpath imports (`#lib`), and kit 3 no longer provides `$lib` itself. The
