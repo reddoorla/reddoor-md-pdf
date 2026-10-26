@@ -1,4 +1,5 @@
-FROM node:22.13-slim AS builder
+# SvelteKit 3.1 requires Node >= 22.17 (its `engines`).
+FROM node:22.22-slim AS builder
 WORKDIR /app
 
 ENV PUPPETEER_SKIP_DOWNLOAD=1
@@ -14,7 +15,7 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 RUN pnpm build
 
-FROM node:22.13-slim AS runner
+FROM node:22.22-slim AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production \

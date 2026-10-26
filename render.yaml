@@ -19,5 +19,3 @@ services:
         value: x-forwarded-for
       - key: XFF_DEPTH
         value: "1"
-      - key: ORIGIN
-        value: https://reddoor-md-pdf.onrender.com
